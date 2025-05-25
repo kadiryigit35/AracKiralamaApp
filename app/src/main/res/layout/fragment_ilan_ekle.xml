@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etAracAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Araç Adı" />
+
+        <EditText
+            android:id="@+id/etAciklama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Açıklama" />
+
+        <EditText
+            android:id="@+id/etUcret"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Günlük Ücret" />
+
+        <EditText
+            android:id="@+id/etResimUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Resim URL" />
+
+        <Button
+            android:id="@+id/btnAracKaydet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kaydet" />
+    </LinearLayout>
+</ScrollView>
