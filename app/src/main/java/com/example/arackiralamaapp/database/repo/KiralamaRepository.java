@@ -1,6 +1,7 @@
 package com.example.arackiralamaapp.database.repo;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.arackiralamaapp.database.Veritabani;

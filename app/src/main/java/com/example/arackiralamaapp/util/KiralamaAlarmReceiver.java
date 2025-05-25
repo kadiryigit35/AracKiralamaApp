@@ -8,7 +8,6 @@ import com.example.arackiralamaapp.database.Veritabani;
 import com.example.arackiralamaapp.database.dao.KiralamaDao;
 import com.example.arackiralamaapp.database.entity.Kiralama;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
