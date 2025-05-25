@@ -1,5 +1,6 @@
 package com.example.arackiralamaapp.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -12,17 +13,19 @@ import java.util.List;
 @Dao
 public interface AracDao {
 
-    @Query("SELECT * FROM araclar WHERE kiradaMi = 0")
-    List<Arac> getKiralanmamisAraclar();
-
     @Insert
     void insert(Arac arac);
 
     @Update
     void updateArac(Arac arac);
 
-    @Query("SELECT * FROM araclar WHERE id = :id")
-    Arac getAracById(int id);
-    @Query("SELECT * FROM araclar WHERE kiradaMi = 1")
-    List<Arac> getKiralananAraclar();
+    /* DAİMA LİVEDATA DÖN → UI otomatik yenilensin */
+    @Query("SELECT * FROM araclar WHERE kiradaMi = 0 ORDER BY id DESC")
+    LiveData<List<Arac>> getUygunAraclar();
+
+    @Query("SELECT * FROM araclar WHERE kiradaMi = 1 ORDER BY id DESC")
+    LiveData<List<Arac>> getKiralananAraclar();
+
+    @Query("SELECT * FROM araclar WHERE id = :aracId LIMIT 1")
+    Arac getAracById(int aracId);            // senkron, repository içinde kullanacağız
 }

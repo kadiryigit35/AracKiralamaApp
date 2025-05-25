@@ -12,30 +12,20 @@ import java.util.List;
 
 public class AracViewModel extends AndroidViewModel {
 
-    private final AracRepository repository;
+    private final AracRepository repo;
     private final LiveData<List<Arac>> uygunAraclar;
+    private final LiveData<List<Arac>> kiralananAraclar;
 
-    public AracViewModel(@NonNull Application application) {
-        super(application);
-        repository = new AracRepository(application);
-        uygunAraclar = repository.getUygunAraclar();
+    public AracViewModel(@NonNull Application app) {
+        super(app);
+        repo = new AracRepository(app);
+        uygunAraclar     = repo.getUygunAraclar();
+        kiralananAraclar = repo.getKiralananAraclar();
     }
 
-    public LiveData<List<Arac>> getUygunAraclar() {
-        return uygunAraclar;
-    }
+    public LiveData<List<Arac>> getUygunAraclar()     { return uygunAraclar; }
+    public LiveData<List<Arac>> getKiralananAraclar() { return kiralananAraclar; }
 
-    public void aracEkle(Arac arac) {
-        repository.aracEkle(arac);
-    }
-
-    public void aracGuncelle(Arac arac) {
-        repository.aracGuncelle(arac);
-    }
-
-    public LiveData<List<Arac>> getKiralananAraclar() {
-        repository.loadKiralananAraclar();
-        return repository.getKiralananAraclar();
-    }
-
+    public void aracEkle(Arac a)       { repo.aracEkle(a); }
+    public void aracGuncelle(Arac a)   { repo.aracGuncelle(a); }
 }

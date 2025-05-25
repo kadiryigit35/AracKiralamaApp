@@ -15,9 +15,6 @@ public interface KiralamaDao {
     @Insert
     void insert(Kiralama kiralama);
 
-    @Query("SELECT * FROM kiralamalar")
+    @Query("SELECT * FROM kiralamalar ORDER BY kiralamaTarihi DESC")
     LiveData<List<Kiralama>> tumKiralamalar();
-
-    @Query("SELECT * FROM kiralamalar WHERE bitisTarihi BETWEEN :baslangic AND :bitis")
-    List<Kiralama> kiralamalarBitisAraliginda(long baslangic, long bitis);
 }

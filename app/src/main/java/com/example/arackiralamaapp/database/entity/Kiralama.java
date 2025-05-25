@@ -12,15 +12,16 @@ import androidx.room.PrimaryKey;
                 parentColumns = "id",
                 childColumns = "aracId",
                 onDelete = CASCADE),
-        indices = {@Index(value = "aracId")})
+        indices = @Index("aracId"))
 public class Kiralama {
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int aracId;
+    public int    aracId;
     public String musteriAdi;
     public String musteriTelefon;
-    public int gunSayisi;
-    public long kiralamaTarihi;
-    public long bitisTarihi;
+    public int    gunSayisi;
+    public long   kiralamaTarihi;
+    public long   bitisTarihi;
 }

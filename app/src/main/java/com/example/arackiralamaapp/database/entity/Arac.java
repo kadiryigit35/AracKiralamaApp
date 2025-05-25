@@ -3,10 +3,11 @@ package com.example.arackiralamaapp.database.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import java.io.Serializable;  // ekle
+
+import java.io.Serializable;
 
 @Entity(tableName = "araclar")
-public class Arac implements Serializable {  // Serializable implement edildi
+public class Arac implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -15,14 +16,10 @@ public class Arac implements Serializable {  // Serializable implement edildi
     private String ad;
 
     private String aciklama;
-
     private double gunlukUcret;
-
     private String resimUri;
-
     private boolean kiradaMi;
 
-    // Getter ve Setter'lar
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

@@ -13,9 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.arackiralamaapp.R;
 import com.example.arackiralamaapp.database.entity.Arac;
+import com.example.arackiralamaapp.database.entity.Kiralama;
+import com.example.arackiralamaapp.ui.viewmodel.AracViewModel;
+import com.example.arackiralamaapp.ui.viewmodel.KiralamaViewModel;
 
 public class KiralamaFragment extends Fragment {
 
@@ -26,6 +30,9 @@ public class KiralamaFragment extends Fragment {
     private TextView tvAracAdi;
     private EditText etAdSoyad, etTelefon, etKiralamaGunSayisi;
     private Button btnKiralamaKaydet;
+
+    private KiralamaViewModel kiralamaViewModel;
+    private AracViewModel aracViewModel;
 
     public static KiralamaFragment newInstance(Arac arac) {
         KiralamaFragment fragment = new KiralamaFragment();
@@ -48,6 +55,9 @@ public class KiralamaFragment extends Fragment {
         etKiralamaGunSayisi = view.findViewById(R.id.etKiralamaGunSayisi);
         btnKiralamaKaydet = view.findViewById(R.id.btnKiralamaKaydet);
 
+        kiralamaViewModel = new ViewModelProvider(this).get(KiralamaViewModel.class);
+        aracViewModel = new ViewModelProvider(this).get(AracViewModel.class);
+
         if (getArguments() != null) {
             arac = (Arac) getArguments().getSerializable(ARG_ARAC);
             if (arac != null) {
@@ -66,12 +76,22 @@ public class KiralamaFragment extends Fragment {
             }
 
             int gunSayisi = Integer.parseInt(gunSayisiStr);
+            long now = System.currentTimeMillis();
 
-            // TODO: Kiralama bilgisini kaydet (veritabanı veya ViewModel)
+            Kiralama kiralama = new Kiralama();
+            kiralama.aracId = arac.getId();
+            kiralama.musteriAdi = adSoyad;
+            kiralama.musteriTelefon = telefon;
+            kiralama.gunSayisi = gunSayisi;
+            kiralama.kiralamaTarihi = now;
+            kiralama.bitisTarihi = now + gunSayisi * 24L * 60 * 60 * 1000;
+
+            kiralamaViewModel.kirala(kiralama);
+
+            arac.setKiradaMi(true);
+            aracViewModel.aracGuncelle(arac);
 
             Toast.makeText(getContext(), "Kiralama başarıyla kaydedildi!", Toast.LENGTH_SHORT).show();
-
-            // Kiralama sonrası geri dönüş veya ana sayfaya dön
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 

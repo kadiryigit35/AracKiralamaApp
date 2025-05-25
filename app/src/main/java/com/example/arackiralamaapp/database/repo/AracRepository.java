@@ -2,7 +2,6 @@ package com.example.arackiralamaapp.database.repo;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.arackiralamaapp.database.Veritabani;
 import com.example.arackiralamaapp.database.dao.AracDao;
@@ -14,51 +13,28 @@ import java.util.concurrent.Executors;
 
 public class AracRepository {
 
-    private final AracDao aracDao;
-    private final ExecutorService executorService;
-    private final MutableLiveData<List<Arac>> uygunAraclar = new MutableLiveData<>();
-    private final MutableLiveData<List<Arac>> kiralananAraclar = new MutableLiveData<>(); // 👈 BU SATIRI EKLE
+    private final AracDao dao;
+    private final ExecutorService io = Executors.newSingleThreadExecutor();
 
-    public AracRepository(Application application) {
-        Veritabani db = Veritabani.getVeritabani(application);
-        aracDao = db.aracDao();
-        executorService = Executors.newSingleThreadExecutor();
-        loadUygunAraclar();
+    public AracRepository(Application app) {
+        dao = Veritabani.getVeritabani(app).aracDao();
     }
 
-    private void loadUygunAraclar() {
-        executorService.execute(() -> {
-            List<Arac> liste = aracDao.getKiralanmamisAraclar();
-            uygunAraclar.postValue(liste);
-        });
-    }
+    public LiveData<List<Arac>> getUygunAraclar()     { return dao.getUygunAraclar(); }
+    public LiveData<List<Arac>> getKiralananAraclar() { return dao.getKiralananAraclar(); }
 
-    public LiveData<List<Arac>> getUygunAraclar() {
-        return uygunAraclar;
-    }
+    public void aracEkle(Arac a) { io.execute(() -> dao.insert(a)); }
 
-    public void loadKiralananAraclar() {
-        executorService.execute(() -> {
-            List<Arac> liste = aracDao.getKiralananAraclar();
-            kiralananAraclar.postValue(liste);
-        });
-    }
+    public void aracGuncelle(Arac a) { io.execute(() -> dao.updateArac(a)); }
 
-    public LiveData<List<Arac>> getKiralananAraclar() {
-        return kiralananAraclar;
-    }
-
-    public void aracEkle(Arac arac) {
-        executorService.execute(() -> {
-            aracDao.insert(arac);
-            loadUygunAraclar();
-        });
-    }
-
-    public void aracGuncelle(Arac arac) {
-        executorService.execute(() -> {
-            aracDao.updateArac(arac);
-            loadUygunAraclar();
+    /* KiradaMi alanını hızlıca değiştirebilmek için */
+    public void setKirada(int aracId, boolean kirada) {
+        io.execute(() -> {
+            Arac a = dao.getAracById(aracId);
+            if (a != null) {
+                a.setKiradaMi(kirada);
+                dao.updateArac(a);
+            }
         });
     }
 }
