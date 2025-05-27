@@ -55,9 +55,11 @@ public class AracDetayFragment extends Fragment {
             tvAracAciklama.setText(arac.getAciklama());
             tvAracFiyat.setText("Günlük Ücret: " + arac.getGunlukUcret() + "₺");
 
-            // Glide ile resmi yükle
+            // Drawable dosya adından resource ID'yi alıyoruz
+            int resId = getResources().getIdentifier(arac.getResimAdi(), "drawable", requireContext().getPackageName());
+
             Glide.with(this)
-                    .load(arac.getResimUri())
+                    .load(resId)
                     .placeholder(R.drawable.ic_placeholder)
                     .into(ivAracResim);
         }

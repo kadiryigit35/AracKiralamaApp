@@ -32,7 +32,7 @@
             android:id="@+id/etResimUri"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Resim URL" />
+            android:hint="Resim ADI" />
 
         <Button
             android:id="@+id/btnAracKaydet"

@@ -56,7 +56,7 @@ public class IlanEkleFragment extends Fragment {
             yeniArac.setAd(ad);
             yeniArac.setAciklama(aciklama);
             yeniArac.setGunlukUcret(ucret);
-            yeniArac.setResimUri(resimUri);
+            yeniArac.setResimAdi(resimUri);
             yeniArac.setKiradaMi(false);  // ilan, boşta araç olarak eklenecek
 
             aracViewModel.aracEkle(yeniArac);
