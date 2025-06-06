@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class HaritaFragment extends Fragment implements OnMapReadyCallback {
@@ -90,15 +91,34 @@ public class HaritaFragment extends Fragment implements OnMapReadyCallback {
                     if (location != null) {
                         LatLng cihazKonum = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cihazKonum, 15f));
+                        // Harita için sınırlar oluşturmak için builder
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-                        // Eğer arac objesi varsa marker ekle
+                        // Kullanıcı konumunu işaretle ve sınırları ekle
+                        googleMap.addMarker(new MarkerOptions().position(cihazKonum).title("Benim Konumum"));
+                        builder.include(cihazKonum);
+
+                        // Arac varsa, aracın konumunu işaretle ve sınırları ekle
                         if (arac != null) {
                             LatLng aracKonum = new LatLng(arac.getLatitude(), arac.getLongitude());
                             googleMap.addMarker(new MarkerOptions().position(aracKonum).title(arac.getAd()));
+                            builder.include(aracKonum);
                         }
+
+                        // Kamera sınırlarını oluştur ve uygula
+                        LatLngBounds bounds = builder.build();
+
+                        // Haritayı iki konumu içerecek şekilde zoom ve hareket ettir
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150)); // 150 px padding
+
                     } else {
                         Toast.makeText(requireContext(), "Konum alınamadı", Toast.LENGTH_SHORT).show();
+                        // Cihaz konumu yoksa sadece aracın konumunu göster
+                        if (arac != null) {
+                            LatLng aracKonum = new LatLng(arac.getLatitude(), arac.getLongitude());
+                            googleMap.addMarker(new MarkerOptions().position(aracKonum).title(arac.getAd()));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(aracKonum, 15f));
+                        }
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(requireContext(), "Konum alınırken hata oluştu", Toast.LENGTH_SHORT).show());
